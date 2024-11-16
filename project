@@ -1,0 +1,207 @@
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Shield, Heart, Activity, AlertCircle } from 'lucide-react';
+
+export default function InsuranceForm() {
+  const [step, setStep] = useState(1);
+  
+  return (
+    <div className="w-full max-w-4xl mx-auto space-y-8 p-4">
+      {/* Welcome Banner */}
+      <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            <Shield size={40} />
+            <div>
+              <CardTitle className="text-2xl">Health Guard Coin Insurance</CardTitle>
+              <CardDescription className="text-gray-100">Asuransi Organ Terdesentralisasi Pertama di Dunia</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <p className="mt-2">Perlindungan maksimal hingga Rp 600.000.000 dengan premi terjangkau mulai dari Rp 2.000.000/bulan</p>
+        </CardContent>
+      </Card>
+
+      {/* Progress Indicator */}
+      <div className="flex justify-between px-2">
+        {[1, 2, 3].map((num) => (
+          <div key={num} className="flex flex-col items-center">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= num ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
+              {num}
+            </div>
+            <span className="text-sm mt-1">
+              {num === 1 ? 'Data Pribadi' : num === 2 ? 'Riwayat Kesehatan' : 'Konfirmasi'}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {step === 1 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Heart className="text-red-500" />
+              Data Pribadi
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Nama Lengkap</Label>
+                <Input placeholder="Sesuai KTP" />
+              </div>
+              <div className="space-y-2">
+                <Label>NIK</Label>
+                <Input placeholder="16 digit" />
+              </div>
+              <div className="space-y-2">
+                <Label>Tempat Lahir</Label>
+                <Input />
+              </div>
+              <div className="space-y-2">
+                <Label>Tanggal Lahir</Label>
+                <Input type="date" />
+              </div>
+              <div className="space-y-2">
+                <Label>Email</Label>
+                <Input type="email" placeholder="email@domain.com" />
+              </div>
+              <div className="space-y-2">
+                <Label>No. Telepon</Label>
+                <Input placeholder="+62" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Alamat Lengkap</Label>
+              <Input placeholder="Sesuai KTP" />
+            </div>
+            <Button className="w-full" onClick={() => setStep(2)}>Lanjut</Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 2 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="text-green-500" />
+              Riwayat Kesehatan
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Tinggi Badan (cm)</Label>
+                  <Input type="number" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Berat Badan (kg)</Label>
+                  <Input type="number" />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Golongan Darah</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {['A', 'B', 'AB', 'O'].map((blood) => (
+                    <Button
+                      key={blood}
+                      variant="outline"
+                      className="hover:bg-blue-100"
+                    >
+                      {blood}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Riwayat Penyakit (centang jika ada)</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    'Diabetes',
+                    'Hipertensi',
+                    'Jantung',
+                    'Kanker',
+                    'Stroke',
+                    'Ginjal',
+                    'Paru-paru',
+                    'Hati'
+                  ].map((disease) => (
+                    <div key={disease} className="flex items-center space-x-2">
+                      <Checkbox id={disease} />
+                      <Label htmlFor={disease}>{disease}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Organ yang Ingin Diasuransikan</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    'Jantung',
+                    'Ginjal',
+                    'Hati',
+                    'Paru-paru',
+                    'Pankreas',
+                    'Kornea'
+                  ].map((organ) => (
+                    <div key={organ} className="flex items-center space-x-2">
+                      <Checkbox id={organ} />
+                      <Label htmlFor={organ}>{organ}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setStep(1)}>Kembali</Button>
+              <Button className="flex-1" onClick={() => setStep(3)}>Lanjut</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 3 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="text-yellow-500" />
+              Konfirmasi dan Persetujuan
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+              <p className="text-sm">Dengan ini saya menyatakan:</p>
+              <div className="space-y-2">
+                {[
+                  'Data yang saya berikan adalah benar dan dapat dipertanggungjawabkan',
+                  'Saya memahami bahwa pembayaran premi sebesar Rp 2.000.000/bulan akan digunakan sesuai ketentuan yang berlaku',
+                  'Saya setuju untuk memberikan akses data medis saya kepada validator untuk keperluan verifikasi klaim',
+                  'Saya memahami bahwa klaim asuransi akan diproses melalui smart contract dan validator network'
+                ].map((term, i) => (
+                  <div key={i} className="flex items-center space-x-2">
+                    <Checkbox id={`term${i}`} />
+                    <Label htmlFor={`term${i}`} className="text-sm">{term}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setStep(2)}>Kembali</Button>
+              <Button className="flex-1">Kirim Pendaftaran</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
